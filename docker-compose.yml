@@ -1,0 +1,72 @@
+services:
+
+  frontend:
+    build:
+      context: ./Emp Management FrontEnd/employee-management-ui
+      dockerfile: Dockerfile
+
+    container_name: react-frontend
+
+    ports:
+      - "5173:80"
+
+    depends_on:
+      - app
+
+    networks:
+      - my-network
+
+  app:
+    build:
+      context: ./Emp Management System/Emp-Management-System
+      dockerfile: Dockerfile
+
+    container_name: springboot-app
+
+    ports:
+      - "8081:8081"
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/employeemanagement
+      SPRING_DATASOURCE_USERNAME: vikas
+      SPRING_DATASOURCE_PASSWORD: 1234
+
+    networks:
+      - my-network
+
+  mysql:
+    image: mysql:8.4
+
+    container_name: mysql-db
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root123
+      MYSQL_DATABASE: employeemanagement
+      MYSQL_USER: vikas
+      MYSQL_PASSWORD: 1234
+
+    ports:
+      - "3308:3306"
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot123"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
