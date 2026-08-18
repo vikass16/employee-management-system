@@ -20,7 +20,7 @@ public class EmployeeService {
         Employee employee = new Employee();
         employee.setName(request.getName());
         employee.setDept(request.getDept());
-        if(request.getSalary() < 0 || request.getSalary()>500000){
+        if(request.getSalary() <= 0 || request.getSalary()>500000){
             throw new IllegalArgumentException("Salary is out of the permissible range");
         }
         employee.setSalary(request.getSalary());

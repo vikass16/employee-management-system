@@ -19,8 +19,7 @@ public class EmployeeController {
 
 
     @PostMapping("/add")
-    public EmployeeAddResponse addEmployee(@RequestBody EmployeeAddRequest request){
-
+    public EmployeeAddResponse addEmployee(@Valid @RequestBody EmployeeAddRequest request){
         return employeeService.addEmployee(request);
     }
 
