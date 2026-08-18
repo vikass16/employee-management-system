@@ -15,6 +15,8 @@ public class Employee {
 
     private String name;
     private String dept;
+    @Positive(message = "Salary must be greater than zero")
+    @Max(value = 500000, message = "Salary cannot exceed 500,000")
     private Double salary;
 
     public Employee() {
